@@ -1,0 +1,80 @@
+// ==========================================
+// 1. Fonctions de manipulation de chaînes
+// ==========================================
+
+// Inverse une chaîne de caractères
+function reverseString(str) {
+    return str.split('').reverse().join('');
+}
+
+// Compte le nombre de caractères dans une chaîne
+function countCharacters(str) {
+    return str.length;
+}
+
+// Met en majuscule la première lettre de chaque mot d'une phrase
+function capitalizeWords(sentence) {
+    return sentence.split(' ')
+                   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                   .join(' ');
+}
+
+// ==========================================
+// 2. Fonctions sur les tableaux
+// ==========================================
+
+// Trouve la valeur maximale dans un tableau
+function findMax(arr) {
+    return Math.max(...arr);
+}
+
+// Trouve la valeur minimale dans un tableau
+function findMin(arr) {
+    return Math.min(...arr);
+}
+
+// Calcule la somme de tous les éléments d'un tableau
+function sumOfArray(arr) {
+    return arr.reduce((sum, num) => sum + num, 0);
+}
+
+// Filtre les éléments d'un tableau selon une condition (ex: ne garder que les nombres pairs)
+function filterArray(arr, conditionFn) {
+    return arr.filter(conditionFn);
+}
+
+// ==========================================
+// 3. Fonctions mathématiques
+// ==========================================
+
+// Calcule la factorielle d'un nombre donné
+function factorial(n) {
+    if (n < 0) return undefined;
+    if (n === 0 || n === 1) return 1;
+    let result = 1;
+    for (let i = 2; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+// Vérifie si un nombre est premier
+function isPrime(n) {
+    if (n <= 1) return false;
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) return false;
+    }
+    return true;
+}
+
+// Génère la suite de Fibonacci jusqu'à un nombre donné de termes
+function generateFibonacci(terms) {
+    if (terms <= 0) return [];
+    if (terms === 1) return;
+    let sequence =;
+    while (sequence.length < terms) {
+        let nextTerm = sequence[sequence.length - 1] + sequence[sequence.length - 2];
+        sequence.push(nextTerm);
+    }
+    return sequence;
+}
