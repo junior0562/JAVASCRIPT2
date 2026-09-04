@@ -1,0 +1,82 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Sélectionner les éléments du DOM
+    const products = document.querySelectorAll(".card, .product, .item"); // Adapte la classe selon ton HTML
+    const totalPriceElement = document.querySelector(".total, #total-price, .total-price");
+
+    // 2. Fonction principale pour recalculer le prix total du panier
+    function updateTotalPrice() {
+        let total = 0;
+        
+        // Parcourir chaque produit visible pour calculer sa contribution au total
+        const activeProducts = document.querySelectorAll(".card, .product, .item");
+        activeProducts.forEach(product => {
+            const priceElement = product.querySelector(".unit-price, .price, .unitaire");
+            const quantityElement = product.querySelector(".quantity, .qte, .quantity-value");
+            
+            if (priceElement && quantityElement) {
+                // Extraire uniquement les nombres du texte (enlève les symboles comme $, €, FCFA)
+                const price = parseFloat(priceElement.textContent.replace(/[^0-9.]/g, ""));
+                const quantity = parseInt(quantityElement.textContent, 10);
+                
+                total += price * quantity;
+            }
+        });
+        
+        // Mettre à jour l'affichage du prix total
+        if (totalPriceElement) {
+            totalPriceElement.textContent = `${total.toFixed(2)} $`; // Modifie le symbole monétaire si nécessaire
+        }
+    }
+
+    // 3. Ajouter les écouteurs d'événements sur chaque produit
+    products.forEach(product => {
+        const btnPlus = product.querySelector(".fa-plus-circle, .btn-plus, .plus");
+        const btnMoins = product.querySelector(".fa-minus-circle, .btn-moins, .moins");
+        const btnDelete = product.querySelector(".fa-trash-alt, .btn-delete, .delete");
+        const btnHeart = product.querySelector(".fa-heart, .btn-heart, .heart");
+        const quantityElement = product.querySelector(".quantity, .qte, .quantity-value");
+
+        // Bouton Augmenter (+)
+        if (btnPlus && quantityElement) {
+            btnPlus.addEventListener("click", () => {
+                let qty = parseInt(quantityElement.textContent, 10);
+                quantityElement.textContent = qty + 1;
+                updateTotalPrice();
+            });
+        }
+
+        // Bouton Diminuer (-)
+        if (btnMoins && quantityElement) {
+            btnMoins.addEventListener("click", () => {
+                let qty = parseInt(quantityElement.textContent, 10);
+                if (qty > 0) { // Empêche de descendre en dessous de 0
+                    quantityElement.textContent = qty - 1;
+                    updateTotalPrice();
+                }
+            });
+        }
+
+        // Bouton Supprimer (Poubelle)
+        if (btnDelete) {
+            btnDelete.addEventListener("click", () => {
+                product.remove(); // Supprime l'élément du DOM
+                updateTotalPrice(); // Recalcule le total immédiatement
+            });
+        }
+
+        // Bouton J'aime (Cœur rouge)
+        if (btnHeart) {
+            btnHeart.addEventListener("click", () => {
+                // Alterne la couleur rouge en ajoutant/retirant une classe CSS ou en modifiant directement le style
+                if (btnHeart.style.color === "red") {
+                    btnHeart.style.color = "black"; // Ou la couleur d'origine
+                } else {
+                    btnHeart.style.color = "red";
+                }
+            });
+        }
+    });
+
+    // Calcul initial au chargement de la page
+    updateTotalPrice();
+});
